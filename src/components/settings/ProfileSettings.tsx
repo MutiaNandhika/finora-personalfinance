@@ -17,7 +17,12 @@ export function ProfileSettings() {
   const { profile, updateProfile, isUpdating } = useProfile();
   const { user } = useAuth();
 
-  const form = useForm<ProfileFormValues>({
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<ProfileFormValues>({
     resolver: zodResolver(profileSchema),
     defaultValues: {
       full_name: "",
@@ -27,12 +32,12 @@ export function ProfileSettings() {
 
   useEffect(() => {
     if (profile) {
-      form.reset({
+      reset({
         full_name: profile.full_name || "",
         currency: profile.currency || "IDR",
       });
     }
-  }, [profile, form]);
+  }, [profile?.full_name, profile?.currency, reset]);
 
   const onSubmit = async (values: ProfileFormValues) => {
     try {
@@ -75,7 +80,7 @@ export function ProfileSettings() {
         </div>
 
         {/* Form */}
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* Full Name */}
             <div className="space-y-1.5">
@@ -85,8 +90,8 @@ export function ProfileSettings() {
               </label>
               <Input
                 placeholder="Enter your full name"
-                {...form.register("full_name")}
-                error={form.formState.errors.full_name?.message}
+                {...register("full_name")}
+                error={errors.full_name?.message}
               />
             </div>
 
@@ -110,7 +115,7 @@ export function ProfileSettings() {
                 <DollarSign className="h-3.5 w-3.5 text-muted-foreground" />
                 Primary Currency
               </label>
-              <Select {...form.register("currency")}>
+              <Select {...register("currency")}>
                 <option value="IDR">IDR — Indonesian Rupiah (Rp)</option>
                 <option value="USD">USD — US Dollar ($)</option>
                 <option value="SGD">SGD — Singapore Dollar (S$)</option>

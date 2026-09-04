@@ -141,12 +141,17 @@ CREATE POLICY "Users can update own profile"
   ON public.profiles FOR UPDATE
   USING (auth.uid() = id);
 
--- 2. Categories Policies (Readable by all authenticated users)
+-- 2. Categories Policies (Readable by all authenticated and anonymous users)
 DROP POLICY IF EXISTS "Authenticated users can read categories" ON public.categories;
-CREATE POLICY "Authenticated users can read categories"
+DROP POLICY IF EXISTS "Allow public read categories" ON public.categories;
+CREATE POLICY "Allow public read categories"
   ON public.categories FOR SELECT
-  TO authenticated
   USING (true);
+
+DROP POLICY IF EXISTS "Allow public insert categories" ON public.categories;
+CREATE POLICY "Allow public insert categories"
+  ON public.categories FOR INSERT
+  WITH CHECK (true);
 
 -- 3. Transactions Policies
 DROP POLICY IF EXISTS "Users can view their own transactions" ON public.transactions;
@@ -191,23 +196,28 @@ CREATE POLICY "Users can delete their own budgets"
   USING (auth.uid() = user_id);
 
 -- ------------------------------------------------------------------------------
--- DEFAULT CATEGORIES SEED DATA
+-- DEFAULT CATEGORIES SEED DATA (Deterministic UUIDs)
 -- ------------------------------------------------------------------------------
-INSERT INTO public.categories (name, type, icon, color) VALUES
+INSERT INTO public.categories (id, name, type, icon, color) VALUES
   -- Expense Categories
-  ('Food', 'expense', 'Utensils', '#EF4444'),
-  ('Transportation', 'expense', 'Car', '#F97316'),
-  ('Shopping', 'expense', 'ShoppingBag', '#EC4899'),
-  ('Bills', 'expense', 'Receipt', '#8B5CF6'),
-  ('Entertainment', 'expense', 'Gamepad2', '#3B82F6'),
-  ('Health', 'expense', 'HeartPulse', '#10B981'),
-  ('Education', 'expense', 'GraduationCap', '#6366F1'),
-  ('Other Expense', 'expense', 'MoreHorizontal', '#64748B'),
+  ('e0000000-0000-4000-8000-000000000001', 'Food', 'expense', 'Utensils', '#EF4444'),
+  ('e0000000-0000-4000-8000-000000000002', 'Transportation', 'expense', 'Car', '#F97316'),
+  ('e0000000-0000-4000-8000-000000000003', 'Shopping', 'expense', 'ShoppingBag', '#EC4899'),
+  ('e0000000-0000-4000-8000-000000000004', 'Bills', 'expense', 'Receipt', '#8B5CF6'),
+  ('e0000000-0000-4000-8000-000000000005', 'Entertainment', 'expense', 'Gamepad2', '#3B82F6'),
+  ('e0000000-0000-4000-8000-000000000006', 'Health', 'expense', 'HeartPulse', '#10B981'),
+  ('e0000000-0000-4000-8000-000000000007', 'Education', 'expense', 'GraduationCap', '#6366F1'),
+  ('e0000000-0000-4000-8000-000000000008', 'Other Expense', 'expense', 'MoreHorizontal', '#64748B'),
   
   -- Income Categories
-  ('Salary', 'income', 'Briefcase', '#10B981'),
-  ('Freelance', 'income', 'Laptop', '#06B6D4'),
-  ('Business', 'income', 'Store', '#8B5CF6'),
-  ('Investment', 'income', 'TrendingUp', '#F59E0B'),
-  ('Other Income', 'income', 'Wallet', '#64748B')
-ON CONFLICT DO NOTHING;
+  ('a0000000-0000-4000-8000-000000000001', 'Salary', 'income', 'Briefcase', '#10B981'),
+  ('a0000000-0000-4000-8000-000000000002', 'Freelance', 'income', 'Laptop', '#06B6D4'),
+  ('a0000000-0000-4000-8000-000000000003', 'Business', 'income', 'Store', '#8B5CF6'),
+  ('a0000000-0000-4000-8000-000000000004', 'Investment', 'income', 'TrendingUp', '#F59E0B'),
+  ('a0000000-0000-4000-8000-000000000005', 'Other Income', 'income', 'Wallet', '#64748B')
+ON CONFLICT (id) DO UPDATE SET
+  name = EXCLUDED.name,
+  type = EXCLUDED.type,
+  icon = EXCLUDED.icon,
+  color = EXCLUDED.color;
+

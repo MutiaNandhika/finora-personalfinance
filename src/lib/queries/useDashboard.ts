@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getDashboardData } from "@/lib/services/api";
 import { useAuth } from "@/components/providers/AuthProvider";
@@ -12,13 +13,31 @@ export function useDashboard() {
     queryFn: () => getDashboardData(user?.id),
   });
 
+  const recentTransactions = useMemo(
+    () => query.data?.recentTransactions || [],
+    [query.data?.recentTransactions]
+  );
+  const budgetProgress = useMemo(
+    () => query.data?.budgetProgress || [],
+    [query.data?.budgetProgress]
+  );
+  const monthlyExpenseTrend = useMemo(
+    () => query.data?.monthlyExpenseTrend || [],
+    [query.data?.monthlyExpenseTrend]
+  );
+  const expenseByCategory = useMemo(
+    () => query.data?.expenseByCategory || [],
+    [query.data?.expenseByCategory]
+  );
+
   return {
     ...query,
     data: query.data,
     stats: query.data?.stats,
-    recentTransactions: query.data?.recentTransactions || [],
-    budgetProgress: query.data?.budgetProgress || [],
-    monthlyExpenseTrend: query.data?.monthlyExpenseTrend || [],
-    expenseByCategory: query.data?.expenseByCategory || [],
+    recentTransactions,
+    budgetProgress,
+    monthlyExpenseTrend,
+    expenseByCategory,
   };
 }
+

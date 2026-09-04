@@ -38,7 +38,14 @@ export function TransactionModal({
 
   const todayStr = new Date().toISOString().split("T")[0];
 
-  const form = useForm<TransactionFormValues>({
+  const {
+    register,
+    handleSubmit,
+    reset,
+    setValue,
+    control,
+    formState: { errors },
+  } = useForm<TransactionFormValues>({
     resolver: zodResolver(transactionSchema),
     defaultValues: {
       type: "expense",
@@ -50,38 +57,38 @@ export function TransactionModal({
     },
   });
 
-  const selectedType = useWatch({ control: form.control, name: "type" });
+  const selectedType = useWatch({ control, name: "type" });
   const availableCategories = selectedType === "income" ? incomeCategories : expenseCategories;
 
   useEffect(() => {
-    if (open) {
-      if (mode === "edit" && initialData) {
-        form.reset({
-          type: initialData.type,
-          title: initialData.title,
-          amount: Number(initialData.amount),
-          category_id: initialData.category_id || "",
-          transaction_date: initialData.transaction_date,
-          description: initialData.description || "",
-        });
-      } else {
-        form.reset({
-          type: "expense",
-          title: "",
-          amount: undefined,
-          category_id: expenseCategories[0]?.id || "",
-          transaction_date: todayStr,
-          description: "",
-        });
-      }
+    if (!open) return;
+
+    if (mode === "edit" && initialData) {
+      reset({
+        type: initialData.type,
+        title: initialData.title,
+        amount: Number(initialData.amount),
+        category_id: initialData.category_id || "",
+        transaction_date: initialData.transaction_date,
+        description: initialData.description || "",
+      });
+    } else {
+      reset({
+        type: "expense",
+        title: "",
+        amount: undefined,
+        category_id: expenseCategories[0]?.id || "",
+        transaction_date: todayStr,
+        description: "",
+      });
     }
-  }, [open, mode, initialData, expenseCategories, todayStr, form]);
+  }, [open, mode, initialData, todayStr, reset]);
 
   const handleTypeChange = (newType: "income" | "expense") => {
-    form.setValue("type", newType);
+    setValue("type", newType);
     const targetCats = newType === "income" ? incomeCategories : expenseCategories;
     if (targetCats.length > 0) {
-      form.setValue("category_id", targetCats[0].id);
+      setValue("category_id", targetCats[0].id);
     }
   };
 
@@ -130,7 +137,7 @@ export function TransactionModal({
           </DialogDescription>
         </DialogHeader>
 
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           {/* Type Toggle */}
           <div className="space-y-1.5">
             <label className="text-xs font-semibold text-foreground">
@@ -169,8 +176,8 @@ export function TransactionModal({
             </label>
             <Input
               placeholder="e.g. Supermarket Groceries or Monthly Salary"
-              {...form.register("title")}
-              error={form.formState.errors.title?.message}
+              {...register("title")}
+              error={errors.title?.message}
             />
           </div>
 
@@ -184,8 +191,8 @@ export function TransactionModal({
               <Input
                 type="number"
                 placeholder="e.g. 1500000"
-                {...form.register("amount", { valueAsNumber: true })}
-                error={form.formState.errors.amount?.message}
+                {...register("amount", { valueAsNumber: true })}
+                error={errors.amount?.message}
               />
             </div>
 
@@ -196,8 +203,8 @@ export function TransactionModal({
               </label>
               <Input
                 type="date"
-                {...form.register("transaction_date")}
-                error={form.formState.errors.transaction_date?.message}
+                {...register("transaction_date")}
+                error={errors.transaction_date?.message}
               />
             </div>
           </div>
@@ -208,8 +215,8 @@ export function TransactionModal({
               Category <span className="text-destructive">*</span>
             </label>
             <Select
-              {...form.register("category_id")}
-              error={form.formState.errors.category_id?.message}
+              {...register("category_id")}
+              error={errors.category_id?.message}
             >
               <option value="" disabled>
                 Select a category
@@ -230,8 +237,8 @@ export function TransactionModal({
             <Textarea
               placeholder="Add optional notes, tags, or merchant info..."
               rows={2}
-              {...form.register("description")}
-              error={form.formState.errors.description?.message}
+              {...register("description")}
+              error={errors.description?.message}
             />
           </div>
 

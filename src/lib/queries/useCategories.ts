@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getCategories } from "@/lib/services/api";
 
@@ -10,13 +11,21 @@ export function useCategories() {
     staleTime: 1000 * 60 * 30, // 30 minutes cache
   });
 
-  const incomeCategories = (query.data || []).filter((c) => c.type === "income");
-  const expenseCategories = (query.data || []).filter((c) => c.type === "expense");
+  const categories = useMemo(() => query.data || [], [query.data]);
+  const incomeCategories = useMemo(
+    () => categories.filter((c) => c.type === "income"),
+    [categories]
+  );
+  const expenseCategories = useMemo(
+    () => categories.filter((c) => c.type === "expense"),
+    [categories]
+  );
 
   return {
     ...query,
-    categories: query.data || [],
+    categories,
     incomeCategories,
     expenseCategories,
   };
 }
+

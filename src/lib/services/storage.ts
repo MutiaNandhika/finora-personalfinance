@@ -1,4 +1,4 @@
-import { DEFAULT_CATEGORIES, DEMO_STORAGE_KEY } from "@/lib/constants";
+import { DEFAULT_CATEGORIES, DEFAULT_CATEGORY_IDS, DEMO_STORAGE_KEY } from "@/lib/constants";
 import { Transaction, Budget, Category, Profile } from "@/types";
 
 export interface DemoStore {
@@ -46,7 +46,7 @@ export function generateInitialDemoData(userId: string = "demo-user-id"): DemoSt
     {
       id: "tx-inc-1",
       user_id: userId,
-      category_id: "cat-inc-1", // Salary
+      category_id: DEFAULT_CATEGORY_IDS.SALARY,
       title: "Monthly Tech Lead Salary",
       description: "PT Teknologi Nusantara monthly payout",
       amount: 28500000,
@@ -58,7 +58,7 @@ export function generateInitialDemoData(userId: string = "demo-user-id"): DemoSt
     {
       id: "tx-inc-2",
       user_id: userId,
-      category_id: "cat-inc-2", // Freelance
+      category_id: DEFAULT_CATEGORY_IDS.FREELANCE,
       title: "Fintech UI/UX Consulting",
       description: "Singapore client milestone payment",
       amount: 9500000,
@@ -70,7 +70,7 @@ export function generateInitialDemoData(userId: string = "demo-user-id"): DemoSt
     {
       id: "tx-inc-3",
       user_id: userId,
-      category_id: "cat-inc-4", // Investment
+      category_id: DEFAULT_CATEGORY_IDS.INVESTMENT,
       title: "Stock Dividend Payout",
       description: "BBCA & TLKM quarterly dividends",
       amount: 1750000,
@@ -84,7 +84,7 @@ export function generateInitialDemoData(userId: string = "demo-user-id"): DemoSt
     {
       id: "tx-exp-1",
       user_id: userId,
-      category_id: "cat-exp-4", // Bills
+      category_id: DEFAULT_CATEGORY_IDS.BILLS,
       title: "Apartment Rental & Utilities",
       description: "Monthly rent + high speed internet & electricity",
       amount: 4800000,
@@ -96,7 +96,7 @@ export function generateInitialDemoData(userId: string = "demo-user-id"): DemoSt
     {
       id: "tx-exp-2",
       user_id: userId,
-      category_id: "cat-exp-1", // Food
+      category_id: DEFAULT_CATEGORY_IDS.FOOD,
       title: "Supermarket Weekly Groceries",
       description: "Ranch Market fresh ingredients and protein",
       amount: 1450000,
@@ -108,7 +108,7 @@ export function generateInitialDemoData(userId: string = "demo-user-id"): DemoSt
     {
       id: "tx-exp-3",
       user_id: userId,
-      category_id: "cat-exp-2", // Transportation
+      category_id: DEFAULT_CATEGORY_IDS.TRANSPORTATION,
       title: "Car Fuel & Toll Charges",
       description: "Pertamax Turbo & Mandiri e-Money top-up",
       amount: 850000,
@@ -120,7 +120,7 @@ export function generateInitialDemoData(userId: string = "demo-user-id"): DemoSt
     {
       id: "tx-exp-4",
       user_id: userId,
-      category_id: "cat-exp-3", // Shopping
+      category_id: DEFAULT_CATEGORY_IDS.SHOPPING,
       title: "Mechanical Keyboard & Desk Mat",
       description: "Workstation productivity upgrades",
       amount: 2200000,
@@ -132,7 +132,7 @@ export function generateInitialDemoData(userId: string = "demo-user-id"): DemoSt
     {
       id: "tx-exp-5",
       user_id: userId,
-      category_id: "cat-exp-1", // Food
+      category_id: DEFAULT_CATEGORY_IDS.FOOD,
       title: "Dinner with Team",
       description: "Casual weekend dinner at Osteria Gia",
       amount: 920000,
@@ -144,7 +144,7 @@ export function generateInitialDemoData(userId: string = "demo-user-id"): DemoSt
     {
       id: "tx-exp-6",
       user_id: userId,
-      category_id: "cat-exp-5", // Entertainment
+      category_id: DEFAULT_CATEGORY_IDS.ENTERTAINMENT,
       title: "Cinema IMAX & Streaming Subs",
       description: "Netflix, Spotify, and Disney+ monthly bills",
       amount: 450000,
@@ -156,7 +156,7 @@ export function generateInitialDemoData(userId: string = "demo-user-id"): DemoSt
     {
       id: "tx-exp-7",
       user_id: userId,
-      category_id: "cat-exp-6", // Health
+      category_id: DEFAULT_CATEGORY_IDS.HEALTH,
       title: "Monthly Gym Membership & Supplements",
       description: "Fitness First All Club & Whey Protein",
       amount: 1100000,
@@ -168,7 +168,7 @@ export function generateInitialDemoData(userId: string = "demo-user-id"): DemoSt
     {
       id: "tx-exp-8",
       user_id: userId,
-      category_id: "cat-exp-7", // Education
+      category_id: DEFAULT_CATEGORY_IDS.EDUCATION,
       title: "Advanced System Design Course",
       description: "Online engineering certification subscription",
       amount: 1500000,
@@ -182,7 +182,7 @@ export function generateInitialDemoData(userId: string = "demo-user-id"): DemoSt
     {
       id: "tx-prev-1",
       user_id: userId,
-      category_id: "cat-inc-1",
+      category_id: DEFAULT_CATEGORY_IDS.SALARY,
       title: "Monthly Tech Lead Salary",
       description: "PT Teknologi Nusantara",
       amount: 28500000,
@@ -194,7 +194,7 @@ export function generateInitialDemoData(userId: string = "demo-user-id"): DemoSt
     {
       id: "tx-prev-2",
       user_id: userId,
-      category_id: "cat-exp-4",
+      category_id: DEFAULT_CATEGORY_IDS.BILLS,
       title: "Apartment Rental & Utilities",
       description: "Monthly rent",
       amount: 4800000,
@@ -206,7 +206,7 @@ export function generateInitialDemoData(userId: string = "demo-user-id"): DemoSt
     {
       id: "tx-prev-3",
       user_id: userId,
-      category_id: "cat-exp-1",
+      category_id: DEFAULT_CATEGORY_IDS.FOOD,
       title: "Monthly Food & Groceries",
       description: "Food and dining",
       amount: 3200000,
@@ -221,7 +221,7 @@ export function generateInitialDemoData(userId: string = "demo-user-id"): DemoSt
     {
       id: "bg-1",
       user_id: userId,
-      category_id: "cat-exp-1", // Food
+      category_id: DEFAULT_CATEGORY_IDS.FOOD,
       amount: 3500000,
       month: currentMonthStr,
       created_at: new Date().toISOString(),
@@ -230,7 +230,7 @@ export function generateInitialDemoData(userId: string = "demo-user-id"): DemoSt
     {
       id: "bg-2",
       user_id: userId,
-      category_id: "cat-exp-4", // Bills
+      category_id: DEFAULT_CATEGORY_IDS.BILLS,
       amount: 5000000,
       month: currentMonthStr,
       created_at: new Date().toISOString(),
@@ -239,7 +239,7 @@ export function generateInitialDemoData(userId: string = "demo-user-id"): DemoSt
     {
       id: "bg-3",
       user_id: userId,
-      category_id: "cat-exp-2", // Transportation
+      category_id: DEFAULT_CATEGORY_IDS.TRANSPORTATION,
       amount: 1500000,
       month: currentMonthStr,
       created_at: new Date().toISOString(),
@@ -248,7 +248,7 @@ export function generateInitialDemoData(userId: string = "demo-user-id"): DemoSt
     {
       id: "bg-4",
       user_id: userId,
-      category_id: "cat-exp-3", // Shopping
+      category_id: DEFAULT_CATEGORY_IDS.SHOPPING,
       amount: 2500000,
       month: currentMonthStr,
       created_at: new Date().toISOString(),
@@ -257,7 +257,7 @@ export function generateInitialDemoData(userId: string = "demo-user-id"): DemoSt
     {
       id: "bg-5",
       user_id: userId,
-      category_id: "cat-exp-5", // Entertainment
+      category_id: DEFAULT_CATEGORY_IDS.ENTERTAINMENT,
       amount: 1000000,
       month: currentMonthStr,
       created_at: new Date().toISOString(),
@@ -266,7 +266,7 @@ export function generateInitialDemoData(userId: string = "demo-user-id"): DemoSt
     {
       id: "bg-6",
       user_id: userId,
-      category_id: "cat-exp-6", // Health
+      category_id: DEFAULT_CATEGORY_IDS.HEALTH,
       amount: 1200000,
       month: currentMonthStr,
       created_at: new Date().toISOString(),

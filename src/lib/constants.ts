@@ -80,22 +80,40 @@ export const CATEGORY_ICONS_MAP: Record<
   FolderPlus,
 };
 
+export const DEFAULT_CATEGORY_IDS = {
+  // Expense
+  FOOD: "e0000000-0000-4000-8000-000000000001",
+  TRANSPORTATION: "e0000000-0000-4000-8000-000000000002",
+  SHOPPING: "e0000000-0000-4000-8000-000000000003",
+  BILLS: "e0000000-0000-4000-8000-000000000004",
+  ENTERTAINMENT: "e0000000-0000-4000-8000-000000000005",
+  HEALTH: "e0000000-0000-4000-8000-000000000006",
+  EDUCATION: "e0000000-0000-4000-8000-000000000007",
+  OTHER_EXPENSE: "e0000000-0000-4000-8000-000000000008",
+  // Income
+  SALARY: "a0000000-0000-4000-8000-000000000001",
+  FREELANCE: "a0000000-0000-4000-8000-000000000002",
+  BUSINESS: "a0000000-0000-4000-8000-000000000003",
+  INVESTMENT: "a0000000-0000-4000-8000-000000000004",
+  OTHER_INCOME: "a0000000-0000-4000-8000-000000000005",
+};
+
 export const DEFAULT_CATEGORIES = [
   // Expense
-  { id: "cat-exp-1", name: "Food", type: "expense" as const, icon: "Utensils", color: "#EF4444" },
-  { id: "cat-exp-2", name: "Transportation", type: "expense" as const, icon: "Car", color: "#F97316" },
-  { id: "cat-exp-3", name: "Shopping", type: "expense" as const, icon: "ShoppingBag", color: "#EC4899" },
-  { id: "cat-exp-4", name: "Bills", type: "expense" as const, icon: "Receipt", color: "#8B5CF6" },
-  { id: "cat-exp-5", name: "Entertainment", type: "expense" as const, icon: "Gamepad2", color: "#3B82F6" },
-  { id: "cat-exp-6", name: "Health", type: "expense" as const, icon: "HeartPulse", color: "#10B981" },
-  { id: "cat-exp-7", name: "Education", type: "expense" as const, icon: "GraduationCap", color: "#6366F1" },
-  { id: "cat-exp-8", name: "Other Expense", type: "expense" as const, icon: "MoreHorizontal", color: "#64748B" },
+  { id: DEFAULT_CATEGORY_IDS.FOOD, name: "Food", type: "expense" as const, icon: "Utensils", color: "#EF4444" },
+  { id: DEFAULT_CATEGORY_IDS.TRANSPORTATION, name: "Transportation", type: "expense" as const, icon: "Car", color: "#F97316" },
+  { id: DEFAULT_CATEGORY_IDS.SHOPPING, name: "Shopping", type: "expense" as const, icon: "ShoppingBag", color: "#EC4899" },
+  { id: DEFAULT_CATEGORY_IDS.BILLS, name: "Bills", type: "expense" as const, icon: "Receipt", color: "#8B5CF6" },
+  { id: DEFAULT_CATEGORY_IDS.ENTERTAINMENT, name: "Entertainment", type: "expense" as const, icon: "Gamepad2", color: "#3B82F6" },
+  { id: DEFAULT_CATEGORY_IDS.HEALTH, name: "Health", type: "expense" as const, icon: "HeartPulse", color: "#10B981" },
+  { id: DEFAULT_CATEGORY_IDS.EDUCATION, name: "Education", type: "expense" as const, icon: "GraduationCap", color: "#6366F1" },
+  { id: DEFAULT_CATEGORY_IDS.OTHER_EXPENSE, name: "Other Expense", type: "expense" as const, icon: "MoreHorizontal", color: "#64748B" },
   // Income
-  { id: "cat-inc-1", name: "Salary", type: "income" as const, icon: "Briefcase", color: "#10B981" },
-  { id: "cat-inc-2", name: "Freelance", type: "income" as const, icon: "Laptop", color: "#06B6D4" },
-  { id: "cat-inc-3", name: "Business", type: "income" as const, icon: "Store", color: "#8B5CF6" },
-  { id: "cat-inc-4", name: "Investment", type: "income" as const, icon: "TrendingUp", color: "#F59E0B" },
-  { id: "cat-inc-5", name: "Other Income", type: "income" as const, icon: "Wallet", color: "#64748B" },
+  { id: DEFAULT_CATEGORY_IDS.SALARY, name: "Salary", type: "income" as const, icon: "Briefcase", color: "#10B981" },
+  { id: DEFAULT_CATEGORY_IDS.FREELANCE, name: "Freelance", type: "income" as const, icon: "Laptop", color: "#06B6D4" },
+  { id: DEFAULT_CATEGORY_IDS.BUSINESS, name: "Business", type: "income" as const, icon: "Store", color: "#8B5CF6" },
+  { id: DEFAULT_CATEGORY_IDS.INVESTMENT, name: "Investment", type: "income" as const, icon: "TrendingUp", color: "#F59E0B" },
+  { id: DEFAULT_CATEGORY_IDS.OTHER_INCOME, name: "Other Income", type: "income" as const, icon: "Wallet", color: "#64748B" },
 ];
 
 export const CHART_COLORS = [

@@ -38,7 +38,12 @@ export function BudgetModal({
   const { createBudget, updateBudget, isCreating, isUpdating } = useBudgets(activeMonth);
   const { expenseCategories } = useCategories();
 
-  const form = useForm<BudgetFormValues>({
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<BudgetFormValues>({
     resolver: zodResolver(budgetSchema),
     defaultValues: {
       category_id: "",
@@ -48,22 +53,23 @@ export function BudgetModal({
   });
 
   useEffect(() => {
-    if (open) {
-      if (mode === "edit" && initialData) {
-        form.reset({
-          category_id: initialData.category_id,
-          amount: Number(initialData.amount),
-          month: initialData.month,
-        });
-      } else {
-        form.reset({
-          category_id: expenseCategories[0]?.id || "",
-          amount: undefined,
-          month: activeMonth,
-        });
-      }
+    if (!open) return;
+
+    if (mode === "edit" && initialData) {
+      reset({
+        category_id: initialData.category_id,
+        amount: Number(initialData.amount),
+        month: initialData.month,
+      });
+    } else {
+      reset({
+        category_id: expenseCategories[0]?.id || "",
+        amount: undefined,
+        month: activeMonth,
+      });
     }
-  }, [open, mode, initialData, expenseCategories, activeMonth, form]);
+  }, [open, mode, initialData, activeMonth, reset]);
+
 
   const onSubmit = async (values: BudgetFormValues) => {
     try {
@@ -104,15 +110,15 @@ export function BudgetModal({
           </DialogDescription>
         </DialogHeader>
 
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           {/* Category Select */}
           <div className="space-y-1.5">
             <label className="text-xs font-semibold text-foreground">
               Expense Category <span className="text-destructive">*</span>
             </label>
             <Select
-              {...form.register("category_id")}
-              error={form.formState.errors.category_id?.message}
+              {...register("category_id")}
+              error={errors.category_id?.message}
             >
               <option value="" disabled>
                 Select category
@@ -133,8 +139,8 @@ export function BudgetModal({
             <Input
               type="number"
               placeholder="e.g. 2000000"
-              {...form.register("amount", { valueAsNumber: true })}
-              error={form.formState.errors.amount?.message}
+              {...register("amount", { valueAsNumber: true })}
+              error={errors.amount?.message}
             />
           </div>
 
@@ -145,8 +151,8 @@ export function BudgetModal({
             </label>
             <Input
               type="month"
-              {...form.register("month")}
-              error={form.formState.errors.month?.message}
+              {...register("month")}
+              error={errors.month?.message}
             />
           </div>
 

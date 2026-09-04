@@ -15,7 +15,7 @@ import {
   saveStoredDemoData,
   generateInitialDemoData,
 } from "./storage";
-import { DEFAULT_CATEGORIES } from "@/lib/constants";
+import { DEFAULT_CATEGORIES, DEMO_USER_KEY } from "@/lib/constants";
 import { getCurrentMonth, calculatePercentage } from "@/lib/utils";
 
 // Detect if Supabase is properly configured
@@ -30,6 +30,65 @@ export function isSupabaseConfigured(): boolean {
   );
 }
 
+// Check if active session is in local sandbox/demo mode
+export function isDemoMode(userId?: string): boolean {
+  if (!isSupabaseConfigured() || !userId || userId === "demo-user-id") {
+    return true;
+  }
+  if (typeof window !== "undefined") {
+    return localStorage.getItem(DEMO_USER_KEY) === "true";
+  }
+  return false;
+}
+
+// Helper to map legacy category IDs or resolve to a valid UUID
+export function mapToValidCategoryId(
+  rawCategoryId?: string | null,
+  categories: Category[] = []
+): string | null {
+  if (!rawCategoryId) return null;
+
+  const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(rawCategoryId);
+  if (isUuid) {
+    const exists = categories.some((c) => c.id === rawCategoryId);
+    if (exists || categories.length === 0) return rawCategoryId;
+  }
+
+  // Legacy ID mapping (e.g. cat-inc-1 -> Salary -> matching UUID)
+  const legacyToName: Record<string, string> = {
+    "cat-inc-1": "Salary",
+    "cat-inc-2": "Freelance",
+    "cat-inc-3": "Business",
+    "cat-inc-4": "Investment",
+    "cat-inc-5": "Other Income",
+    "cat-exp-1": "Food",
+    "cat-exp-2": "Transportation",
+    "cat-exp-3": "Shopping",
+    "cat-exp-4": "Bills",
+    "cat-exp-5": "Entertainment",
+    "cat-exp-6": "Health",
+    "cat-exp-7": "Education",
+    "cat-exp-8": "Other Expense",
+  };
+
+  const targetName = legacyToName[rawCategoryId];
+  if (targetName) {
+    const match = categories.find((c) => c.name.toLowerCase() === targetName.toLowerCase());
+    if (match && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(match.id)) {
+      return match.id;
+    }
+    const defMatch = DEFAULT_CATEGORIES.find((c) => c.name.toLowerCase() === targetName.toLowerCase());
+    if (defMatch) return defMatch.id;
+  }
+
+  // Check if rawCategoryId matches any default category id
+  const def = DEFAULT_CATEGORIES.find((c) => c.id === rawCategoryId);
+  if (def) return def.id;
+
+  if (isUuid) return rawCategoryId;
+  return categories[0]?.id || null;
+}
+
 // ------------------------------------------------------------------------------
 // CATEGORIES
 // ------------------------------------------------------------------------------
@@ -39,14 +98,41 @@ export async function getCategories(): Promise<Category[]> {
     return store.categories;
   }
 
-  const supabase = createClient();
-  const { data, error } = await supabase
-    .from("categories")
-    .select("*")
-    .order("name", { ascending: true });
+  try {
+    const supabase = createClient();
+    const { data, error } = await supabase
+      .from("categories")
+      .select("*")
+      .order("name", { ascending: true });
 
-  if (error || !data || data.length === 0) {
-    // Return fallback default categories
+    if (error || !data || data.length === 0) {
+      if (!error && (!data || data.length === 0)) {
+        try {
+          const defaultRows = DEFAULT_CATEGORIES.map((c) => ({
+            id: c.id,
+            name: c.name,
+            type: c.type,
+            icon: c.icon,
+            color: c.color,
+          }));
+          await supabase.from("categories").upsert(defaultRows, { onConflict: "id" });
+        } catch {
+          // ignore auto-seed background error
+        }
+      }
+
+      return DEFAULT_CATEGORIES.map((c) => ({
+        id: c.id,
+        name: c.name,
+        type: c.type,
+        icon: c.icon,
+        color: c.color,
+        created_at: new Date().toISOString(),
+      }));
+    }
+
+    return data as Category[];
+  } catch {
     return DEFAULT_CATEGORIES.map((c) => ({
       id: c.id,
       name: c.name,
@@ -56,8 +142,6 @@ export async function getCategories(): Promise<Category[]> {
       created_at: new Date().toISOString(),
     }));
   }
-
-  return data as Category[];
 }
 
 // ------------------------------------------------------------------------------
@@ -67,7 +151,7 @@ export async function getTransactions(userId?: string): Promise<TransactionWithC
   const categories = await getCategories();
   const categoryMap = new Map(categories.map((c) => [c.id, c]));
 
-  if (!isSupabaseConfigured() || !userId) {
+  if (isDemoMode(userId)) {
     const store = getStoredDemoData();
     return store.transactions
       .map((t) => ({
@@ -87,7 +171,7 @@ export async function getTransactions(userId?: string): Promise<TransactionWithC
     .order("transaction_date", { ascending: false });
 
   if (error) {
-    console.error("Supabase getTransactions error:", error);
+    console.warn("Supabase getTransactions notice:", error.message);
     const store = getStoredDemoData();
     return store.transactions.map((t) => ({
       ...t,
@@ -102,7 +186,7 @@ export async function createTransaction(
   payload: Omit<Transaction, "id" | "created_at" | "updated_at">,
   userId?: string
 ): Promise<Transaction> {
-  if (!isSupabaseConfigured() || !userId) {
+  if (isDemoMode(userId)) {
     const store = getStoredDemoData();
     const newTx: Transaction = {
       ...payload,
@@ -115,13 +199,17 @@ export async function createTransaction(
     return newTx;
   }
 
+  const categories = await getCategories();
+  const validCategoryId = mapToValidCategoryId(payload.category_id, categories);
+
   const supabase = createClient();
   const { data, error } = await supabase
     .from("transactions")
     .insert([
       {
         ...payload,
-        user_id: userId,
+        category_id: validCategoryId,
+        user_id: userId!,
       },
     ])
     .select()
@@ -136,7 +224,7 @@ export async function updateTransaction(
   payload: Partial<Omit<Transaction, "id" | "user_id" | "created_at" | "updated_at">>,
   userId?: string
 ): Promise<Transaction> {
-  if (!isSupabaseConfigured() || !userId) {
+  if (isDemoMode(userId)) {
     const store = getStoredDemoData();
     const index = store.transactions.findIndex((t) => t.id === id);
     if (index === -1) throw new Error("Transaction not found");
@@ -151,11 +239,18 @@ export async function updateTransaction(
     return updated;
   }
 
+  let validCategoryId = payload.category_id;
+  if (payload.category_id !== undefined) {
+    const categories = await getCategories();
+    validCategoryId = mapToValidCategoryId(payload.category_id, categories) || undefined;
+  }
+
   const supabase = createClient();
   const { data, error } = await supabase
     .from("transactions")
     .update({
       ...payload,
+      ...(validCategoryId !== undefined ? { category_id: validCategoryId } : {}),
       updated_at: new Date().toISOString(),
     })
     .eq("id", id)
@@ -167,7 +262,7 @@ export async function updateTransaction(
 }
 
 export async function deleteTransaction(id: string, userId?: string): Promise<void> {
-  if (!isSupabaseConfigured() || !userId) {
+  if (isDemoMode(userId)) {
     const store = getStoredDemoData();
     store.transactions = store.transactions.filter((t) => t.id !== id);
     saveStoredDemoData(store);
@@ -192,10 +287,10 @@ export async function getBudgetsWithProgress(
   let rawBudgets: Budget[] = [];
   let transactions: TransactionWithCategory[] = [];
 
-  if (!isSupabaseConfigured() || !userId) {
+  if (isDemoMode(userId)) {
     const store = getStoredDemoData();
     rawBudgets = store.budgets.filter((b) => b.month === month);
-    transactions = await getTransactions();
+    transactions = await getTransactions(userId);
   } else {
     const supabase = createClient();
     const { data: budgetData, error: budgetError } = await supabase
@@ -203,8 +298,13 @@ export async function getBudgetsWithProgress(
       .select("*")
       .eq("month", month);
 
-    if (budgetError) throw new Error(budgetError.message);
-    rawBudgets = (budgetData || []) as Budget[];
+    if (budgetError) {
+      console.warn("Supabase getBudgets notice:", budgetError.message);
+      const store = getStoredDemoData();
+      rawBudgets = store.budgets.filter((b) => b.month === month);
+    } else {
+      rawBudgets = (budgetData || []) as Budget[];
+    }
     transactions = await getTransactions(userId);
   }
 
@@ -254,7 +354,7 @@ export async function createBudget(
   payload: Omit<Budget, "id" | "created_at" | "updated_at">,
   userId?: string
 ): Promise<Budget> {
-  if (!isSupabaseConfigured() || !userId) {
+  if (isDemoMode(userId)) {
     const store = getStoredDemoData();
     const existing = store.budgets.find(
       (b) => b.category_id === payload.category_id && b.month === payload.month
@@ -274,13 +374,21 @@ export async function createBudget(
     return newBudget;
   }
 
+  const categories = await getCategories();
+  const validCategoryId = mapToValidCategoryId(payload.category_id, categories);
+
+  if (!validCategoryId) {
+    throw new Error("Invalid expense category selected.");
+  }
+
   const supabase = createClient();
   const { data, error } = await supabase
     .from("budgets")
     .insert([
       {
         ...payload,
-        user_id: userId,
+        category_id: validCategoryId,
+        user_id: userId!,
       },
     ])
     .select()
@@ -300,7 +408,7 @@ export async function updateBudget(
   payload: Partial<Omit<Budget, "id" | "user_id" | "created_at" | "updated_at">>,
   userId?: string
 ): Promise<Budget> {
-  if (!isSupabaseConfigured() || !userId) {
+  if (isDemoMode(userId)) {
     const store = getStoredDemoData();
     const index = store.budgets.findIndex((b) => b.id === id);
     if (index === -1) throw new Error("Budget not found");
@@ -315,11 +423,18 @@ export async function updateBudget(
     return updated;
   }
 
+  let validCategoryId = payload.category_id;
+  if (payload.category_id !== undefined) {
+    const categories = await getCategories();
+    validCategoryId = mapToValidCategoryId(payload.category_id, categories) || undefined;
+  }
+
   const supabase = createClient();
   const { data, error } = await supabase
     .from("budgets")
     .update({
       ...payload,
+      ...(validCategoryId !== undefined ? { category_id: validCategoryId } : {}),
       updated_at: new Date().toISOString(),
     })
     .eq("id", id)
@@ -331,7 +446,7 @@ export async function updateBudget(
 }
 
 export async function deleteBudget(id: string, userId?: string): Promise<void> {
-  if (!isSupabaseConfigured() || !userId) {
+  if (isDemoMode(userId)) {
     const store = getStoredDemoData();
     store.budgets = store.budgets.filter((b) => b.id !== id);
     saveStoredDemoData(store);
@@ -465,30 +580,34 @@ export async function getDashboardData(userId?: string): Promise<{
 // PROFILE SERVICE
 // ------------------------------------------------------------------------------
 export async function getProfile(userId?: string): Promise<Profile | null> {
-  if (!isSupabaseConfigured() || !userId) {
+  if (isDemoMode(userId)) {
     const store = getStoredDemoData();
     return store.profile;
   }
 
-  const supabase = createClient();
-  const { data, error } = await supabase
-    .from("profiles")
-    .select("*")
-    .eq("id", userId)
-    .single();
+  try {
+    const supabase = createClient();
+    const { data, error } = await supabase
+      .from("profiles")
+      .select("*")
+      .eq("id", userId!)
+      .single();
 
-  if (error) {
-    console.error("Supabase getProfile error:", error);
+    if (error) {
+      console.warn("Supabase getProfile notice:", error.message);
+      return null;
+    }
+    return data as Profile;
+  } catch {
     return null;
   }
-  return data as Profile;
 }
 
 export async function updateProfile(
   userId: string,
   payload: Partial<Profile>
 ): Promise<Profile> {
-  if (!isSupabaseConfigured()) {
+  if (isDemoMode(userId)) {
     const store = getStoredDemoData();
     store.profile = { ...store.profile, ...payload, updated_at: new Date().toISOString() };
     saveStoredDemoData(store);
@@ -514,7 +633,7 @@ export async function updateProfile(
 // SEED LIVE DATABASE HELPER
 // ------------------------------------------------------------------------------
 export async function seedLiveDatabase(userId: string): Promise<{ success: boolean; message: string }> {
-  if (!isSupabaseConfigured()) {
+  if (isDemoMode(userId)) {
     const initial = generateInitialDemoData(userId);
     saveStoredDemoData(initial);
     return { success: true, message: "Demo data reset successfully in local store." };
