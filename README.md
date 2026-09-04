@@ -1,228 +1,114 @@
-# Finora — Personal Finance Management SaaS
+# Finora — Personal Finance Management
 
-> **"Take control of your money."**  
-> A production-grade, full-stack personal finance and wealth management application built with Next.js 16 (App Router), TypeScript, Tailwind CSS, Supabase PostgreSQL with Row Level Security (RLS), TanStack Query, React Hook Form, Zod, and Recharts.
+<div align="center">
 
----
+### Take control of your money.
 
-## 🚀 Live Demo & Portfolio Highlights
+A modern personal finance management web application built to help users track transactions, manage budgets, and understand their financial activity through interactive analytics.
 
-Finora is designed as a portfolio showcase demonstrating mastery of modern frontend and full-stack software engineering:
+[Live Demo](#-live-demo) · [Features](#-features) · [Tech Stack](#-tech-stack) · [Getting Started](#-getting-started)
 
-- **Full CRUD Transactions**: Add, edit, filter, search, sort, and delete income & expenses with real-time feedback.
-- **Dynamic Budget Tracking**: Set monthly limits per category with real-time calculated spending progress, automatic threshold warnings (>80%), and exceeded alerts (>=100%).
-- **Interactive Analytics (Recharts)**: Visual cash flow trajectory, comparative Income vs Expense bar charts, monthly expense trends, donut category distribution, and ranked top spending categories.
-- **Database-Level Row Level Security (RLS)**: Strict PostgreSQL security ensuring users can only read, create, update, and delete their own financial records.
-- **1-Click Recruiter Sandbox Mode**: Seamlessly explore all CRUD, charts, filters, and budgets with pre-loaded mock datasets without needing an external Supabase account.
-- **Complete Dark & Light Mode**: Seamless theme switching with high-contrast fintech aesthetics across all tables, charts, dialogs, and components.
-- **Indonesian Rupiah (IDR) Native**: Fully formatted currency (`Rp12.500.000`) and date handling (`03 Sep 2026`).
+</div>
 
 ---
 
-## 🛠 Tech Stack
+## ✨ Overview
 
-| Layer | Technology |
-|---|---|
-| **Framework** | Next.js 16 (App Router with Server & Client Components) |
-| **Language** | TypeScript (Strict Mode) |
-| **Styling** | Tailwind CSS v4 + Design Tokens + CSS Variables |
-| **Backend & DB** | Supabase (PostgreSQL, Row Level Security, Auth, Triggers) |
-| **State & Fetching** | TanStack React Query v5 |
-| **Forms & Validation**| React Hook Form + Zod Schema Validation |
-| **Visual Charts** | Recharts (Area, Bar, Pie, Line, ResponsiveContainer) |
-| **Icons** | Lucide React |
-| **Theming** | `next-themes` (Dark, Light, System) |
-| **Toasts / Notifications**| Sonner |
+**Finora** is a modern personal finance management SaaS application designed to provide users with a simple and intuitive way to manage their income, expenses, budgets, and financial insights.
+
+The project was built as a **portfolio project to demonstrate modern Frontend Development practices**, including responsive UI development, reusable component architecture, form validation, server-state management, authentication, database integration, and interactive data visualization.
+
+Finora combines a clean fintech-inspired interface with a real PostgreSQL database powered by Supabase.
 
 ---
 
-## 📁 Architecture & Project Structure
+## 🖥️ Preview
 
-```
-src/
-├── app/
-│   ├── layout.tsx              # Root layout (Inter font, Theme, Query, Auth, Toast providers)
-│   ├── page.tsx                # Landing page & feature showcase
-│   ├── login/page.tsx          # Login page with Zod validation + Recruiter sandbox
-│   ├── register/page.tsx       # Register page with password match validation
-│   ├── dashboard/page.tsx      # Dynamic summary cards, trend charts & widgets
-│   ├── transactions/page.tsx   # Ledger with search, multi-filter, sorting & CRUD
-│   ├── budgets/page.tsx        # Monthly budget progress & status indicators
-│   ├── analytics/page.tsx      # Time-window filtered cashflow & category analytics
-│   ├── settings/page.tsx       # Profile, theme, notification & database management
-│   ├── auth/callback/route.ts  # Supabase OAuth and confirmation code exchange
-│   ├── loading.tsx             # Global skeleton loader
-│   ├── error.tsx               # Error boundary with retry action
-│   └── not-found.tsx           # 404 page
-│
-├── components/
-│   ├── ui/                     # Reusable design primitives (Button, Input, Card, Dialog, etc.)
-│   ├── layout/                 # Sidebar, Header, MobileNav, UserNav, ThemeToggle, BrandLogo
-│   ├── common/                 # CategoryIcon, EmptyState, ErrorState, PageHeader
-│   ├── dashboard/              # SummaryCard, ExpenseOverviewChart, ExpenseCategoryChart, etc.
-│   ├── transactions/           # TransactionTable, TransactionFilters, TransactionModal, etc.
-│   ├── budgets/                # BudgetCard, BudgetModal, DeleteBudgetDialog, BudgetSummaryHeader
-│   ├── analytics/              # IncomeVsExpenseChart, ExpenseTrendChart, TopSpendingList, etc.
-│   ├── settings/               # ProfileSettings, AppearanceSettings, SeedDemoDataModal, etc.
-│   └── providers/              # QueryProvider, ThemeProvider, AuthProvider, ToasterProvider
-│
-├── lib/
-│   ├── supabase/               # Browser, Server, and Middleware Supabase clients
-│   ├── services/               # API service repository & localStorage sandbox store
-│   ├── queries/                # Custom TanStack Query hooks (transactions, budgets, stats, etc.)
-│   ├── validations/            # Zod schemas (auth, transaction, budget, profile)
-│   ├── constants.ts            # Default categories, navigation, and color tokens
-│   └── utils.ts                # IDR currency formatting, date helpers, percentage calculations
-│
-├── types/                      # Database schema and domain TypeScript interfaces
-└── supabase/
-    └── schema.sql              # Complete PostgreSQL schema, RLS policies, triggers & seeds
-```
+### Dashboard — Dark Mode
+
+<img src="https://github.com/user-attachments/assets/a72e09e6-7f2c-4d22-b962-b16f36c1c3c1" alt="Finora Dashboard Dark Mode" width="100%" />
+
+### Dashboard — Light Mode
+
+<img src="https://github.com/user-attachments/assets/816a4ecb-9927-48c6-b548-3b98d961afb2" alt="Finora Dashboard Light Mode" width="100%" />
+
+### Landing Page — Dark Mode
+
+<img src="https://github.com/user-attachments/assets/29f45bac-d326-4f56-a590-08ce418d3bf1" alt="Finora Landing Page Dark Mode" width="100%" />
+
+### Landing Page — Light Mode
+
+<img src="https://github.com/user-attachments/assets/e5f3b661-a79f-4e23-b430-5b773d6acc67" alt="Finora Landing Page Light Mode" width="100%" />
 
 ---
 
-## 🗄 Database Schema & RLS Policies
+## 🚀 Live Demo
 
-The complete database migration script is located at `supabase/schema.sql`.
+**Live Website:**  
+https://finora-personalfinance.vercel.app/
 
-### Tables Overview
+> Replace the URL above with your actual Vercel deployment URL.
 
-1. **`profiles`**
-   - `id` (UUID, Primary Key, references `auth.users(id)`)
-   - `full_name` (TEXT)
-   - `email` (TEXT)
-   - `avatar_url` (TEXT)
-   - `currency` (VARCHAR)
-   - `created_at`, `updated_at` (TIMESTAMPTZ)
+### Demo / Sandbox Mode
 
-2. **`categories`**
-   - `id` (UUID, Primary Key)
-   - `name` (TEXT)
-   - `type` ('income' | 'expense')
-   - `icon` (TEXT)
-   - `color` (TEXT)
+Finora includes a demo sandbox experience that allows visitors to explore the application's interface and core functionality without creating a real account.
 
-3. **`transactions`**
-   - `id` (UUID, Primary Key)
-   - `user_id` (UUID, Foreign Key `auth.users(id)`)
-   - `category_id` (UUID, Foreign Key `categories(id)`)
-   - `title` (TEXT)
-   - `description` (TEXT)
-   - `amount` (NUMERIC(15,2))
-   - `type` ('income' | 'expense')
-   - `transaction_date` (DATE)
-   - `created_at`, `updated_at` (TIMESTAMPTZ)
+The sandbox demonstrates:
 
-4. **`budgets`**
-   - `id` (UUID, Primary Key)
-   - `user_id` (UUID, Foreign Key `auth.users(id)`)
-   - `category_id` (UUID, Foreign Key `categories(id)`)
-   - `amount` (NUMERIC(15,2))
-   - `month` (VARCHAR(7) e.g. '2026-09')
-   - Unique Constraint: `(user_id, category_id, month)`
-
-### Row Level Security (RLS)
-
-All user-specific tables (`profiles`, `transactions`, `budgets`) have RLS enabled with explicit policies:
-```sql
-ALTER TABLE public.transactions ENABLE ROW LEVEL SECURITY;
-
-CREATE POLICY "Users can view their own transactions"
-  ON public.transactions FOR SELECT
-  USING (auth.uid() = user_id);
-
-CREATE POLICY "Users can insert their own transactions"
-  ON public.transactions FOR INSERT
-  WITH CHECK (auth.uid() = user_id);
-
-CREATE POLICY "Users can update their own transactions"
-  ON public.transactions FOR UPDATE
-  USING (auth.uid() = user_id);
-
-CREATE POLICY "Users can delete their own transactions"
-  ON public.transactions FOR DELETE
-  USING (auth.uid() = user_id);
-```
+- Dashboard statistics
+- Transaction management
+- Budget tracking
+- Interactive charts
+- Search and filtering
+- Responsive interface
+- Dark and light themes
 
 ---
 
-## ⚙️ Environment Variables
+# 🎯 Features
 
-Create `.env.local` by copying `.env.local.example`:
+## 📊 Financial Dashboard
 
-```bash
-cp .env.local.example .env.local
-```
+The dashboard provides a centralized overview of the user's financial activity.
 
-Populate the values from your Supabase Dashboard:
+Includes:
 
-```env
-NEXT_PUBLIC_SUPABASE_URL=https://your-project-id.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key-here
-```
+- Total balance
+- Total income
+- Total expenses
+- Net savings
+- Income and expense trends
+- Expense category breakdown
+- Recent transactions
+- Budget overview
 
-*(Note: If left blank or using placeholder values, Finora automatically engages its offline interactive sandbox mode).*
-
----
-
-## 💻 Local Development Setup
-
-1. **Clone the repository:**
-   ```bash
-   git clone https://github.com/your-username/finora.git
-   cd finora
-   ```
-
-2. **Install dependencies:**
-   ```bash
-   npm install
-   ```
-
-3. **Set up Supabase Database:**
-   - Go to your [Supabase Dashboard](https://supabase.com/dashboard).
-   - Open the **SQL Editor**.
-   - Copy and paste the contents of `supabase/schema.sql` and run the script.
-
-4. **Run the local development server:**
-   ```bash
-   npm run dev
-   ```
-
-5. **Open in browser:**
-   Navigate to [http://localhost:3000](http://localhost:3000).
+All financial summaries are calculated dynamically from transaction data.
 
 ---
 
-## 🧪 Validation and Verification Commands
+## 💳 Transaction Management
 
-Run code checks and build verification:
+Users can manage their financial transactions through a complete CRUD workflow.
 
-```bash
-# TypeScript verification
-npx tsc --noEmit
+### Supported operations
 
-# ESLint check
-npm run lint
+- Create transactions
+- View transactions
+- Edit transactions
+- Delete transactions
+- Search transactions
+- Filter transactions
+- Sort transactions
+- Categorize transactions
 
-# Production build test
-npm run build
-```
+Transactions support both:
 
----
+- Income
+- Expenses
 
-## 🚢 Production Deployment (Vercel)
+Currency is displayed using Indonesian Rupiah (IDR).
 
-1. Push your code to GitHub.
-2. Import repository to [Vercel](https://vercel.com).
-3. Add Environment Variables:
-   - `NEXT_PUBLIC_SUPABASE_URL`
-   - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
-4. Deploy!
+Example:
 
----
-
-## 👨‍💻 Portfolio Author
-
-- **Developer**: Frontend & Full-Stack Engineer
-- **Project**: Finora Personal Finance SaaS
-- **License**: MIT
+```text
+Rp12.500.000
