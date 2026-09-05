@@ -8,6 +8,7 @@ A modern personal finance management web application built to help users track t
 
 [Live Demo](#-live-demo) · [Features](#-features) · [Tech Stack](#-tech-stack) · [Getting Started](#-getting-started)
 
+<img width="1920" height="5232" alt="landingpage" src="https://github.com/user-attachments/assets/2c7e8ee8-0479-49fb-9869-c5c71f659e05" />
 </div>
 
 ---
@@ -19,26 +20,6 @@ A modern personal finance management web application built to help users track t
 The project was built as a **portfolio project to demonstrate modern Frontend Development practices**, including responsive UI development, reusable component architecture, form validation, server-state management, authentication, database integration, and interactive data visualization.
 
 Finora combines a clean fintech-inspired interface with a real PostgreSQL database powered by Supabase.
-
----
-
-## 🖥️ Preview
-
-### Dashboard — Dark Mode
-
-<img src="https://github.com/user-attachments/assets/a72e09e6-7f2c-4d22-b962-b16f36c1c3c1" alt="Finora Dashboard Dark Mode" width="100%" />
-
-### Dashboard — Light Mode
-
-<img src="https://github.com/user-attachments/assets/816a4ecb-9927-48c6-b548-3b98d961afb2" alt="Finora Dashboard Light Mode" width="100%" />
-
-### Landing Page — Dark Mode
-
-<img src="https://github.com/user-attachments/assets/29f45bac-d326-4f56-a590-08ce418d3bf1" alt="Finora Landing Page Dark Mode" width="100%" />
-
-### Landing Page — Light Mode
-
-<img src="https://github.com/user-attachments/assets/e5f3b661-a79f-4e23-b430-5b773d6acc67" alt="Finora Landing Page Light Mode" width="100%" />
 
 ---
 
