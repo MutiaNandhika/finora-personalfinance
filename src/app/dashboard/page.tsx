@@ -72,9 +72,9 @@ export default function DashboardPage() {
           onRetry={() => refetch()}
         />
       ) : (
-        <div className="space-y-6">
+        <div className="space-y-5 sm:space-y-6">
           {/* Summary Metric Cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3.5 sm:gap-4">
             <SummaryCard
               title="Total Balance"
               amount={stats?.totalBalance || 0}
@@ -116,7 +116,7 @@ export default function DashboardPage() {
           </div>
 
           {/* Category Quick Shortcut Strip */}
-          <div className="rounded-3xl border border-slate-200/80 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 shadow-sm">
+          <div className="rounded-3xl border border-slate-200/80 dark:border-slate-800 bg-white dark:bg-slate-900 p-4 sm:p-5 shadow-xs">
             <div className="flex items-center justify-between pb-3">
               <div className="flex items-center gap-2">
                 <span className="text-[11px] font-extrabold uppercase tracking-wider text-[#F59E0B]">
@@ -134,16 +134,16 @@ export default function DashboardPage() {
               </Link>
             </div>
 
-            <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-2.5">
+            <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-2 sm:gap-2.5">
               {quickCategories.map((cat) => {
                 const Icon = cat.icon;
                 return (
                   <button
                     key={cat.name}
                     onClick={() => setIsAddTxOpen(true)}
-                    className="flex flex-col items-center justify-center p-3 rounded-2xl bg-slate-50 hover:bg-blue-50/80 dark:bg-slate-800/60 dark:hover:bg-slate-800 border border-slate-100 dark:border-slate-800 hover:border-blue-200 dark:hover:border-slate-700 transition-all cursor-pointer group hover:-translate-y-0.5"
+                    className="flex flex-col items-center justify-center p-2.5 sm:p-3 rounded-2xl bg-slate-50 hover:bg-blue-50/80 dark:bg-slate-800/60 dark:hover:bg-slate-800 border border-slate-100 dark:border-slate-800 hover:border-blue-200 dark:hover:border-slate-700 transition-all cursor-pointer group hover:-translate-y-0.5"
                   >
-                    <div className={`w-8 h-8 rounded-xl flex items-center justify-center mb-1.5 shadow-xs group-hover:scale-110 transition-transform ${cat.bg}`}>
+                    <div className={`w-8 h-8 rounded-xl flex items-center justify-center mb-1.5 shadow-2xs group-hover:scale-105 transition-transform ${cat.bg}`}>
                       <Icon className="w-4 h-4" />
                     </div>
                     <span className="text-[11px] font-bold text-[#1E293B] dark:text-slate-200 text-center line-clamp-1">
@@ -155,9 +155,9 @@ export default function DashboardPage() {
 
               <Link
                 href="/transactions"
-                className="flex flex-col items-center justify-center p-3 rounded-2xl bg-slate-50 hover:bg-slate-100 dark:bg-slate-800/60 dark:hover:bg-slate-800 border border-slate-100 dark:border-slate-800 transition-all group hover:-translate-y-0.5"
+                className="flex flex-col items-center justify-center p-2.5 sm:p-3 rounded-2xl bg-slate-50 hover:bg-slate-100 dark:bg-slate-800/60 dark:hover:bg-slate-800 border border-slate-100 dark:border-slate-800 transition-all group hover:-translate-y-0.5"
               >
-                <div className="w-8 h-8 rounded-xl flex items-center justify-center mb-1.5 bg-slate-200 text-slate-600 dark:bg-slate-700 dark:text-slate-300 shadow-xs group-hover:scale-110 transition-transform">
+                <div className="w-8 h-8 rounded-xl flex items-center justify-center mb-1.5 bg-slate-200 text-slate-600 dark:bg-slate-700 dark:text-slate-300 shadow-2xs group-hover:scale-105 transition-transform">
                   <MoreHorizontal className="w-4 h-4" />
                 </div>
                 <span className="text-[11px] font-bold text-[#64748B] dark:text-slate-400 text-center">
@@ -168,7 +168,7 @@ export default function DashboardPage() {
           </div>
 
           {/* Charts Row: Cashflow Trends & Category Donut */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 sm:gap-6">
             <div className="lg:col-span-2">
               <ExpenseOverviewChart
                 data={monthlyExpenseTrend}
@@ -185,7 +185,7 @@ export default function DashboardPage() {
           </div>
 
           {/* Bottom Row: Recent Transactions & Active Budget Widgets */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 sm:gap-6">
             <RecentTransactionsList
               transactions={recentTransactions}
               isLoading={isLoading}

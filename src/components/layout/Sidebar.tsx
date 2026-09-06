@@ -16,13 +16,13 @@ export function Sidebar() {
   return (
     <aside className="hidden lg:flex flex-col w-64 border-r border-slate-200/80 dark:border-slate-800 bg-white/95 dark:bg-slate-950/95 backdrop-blur-md shrink-0 h-screen sticky top-0 select-none z-30">
       {/* Brand Header */}
-      <div className="h-20 px-6 flex items-center border-b border-slate-100 dark:border-slate-800">
-        <BrandLogo showTagline size="sm" />
+      <div className="h-16 px-6 flex items-center border-b border-slate-100 dark:border-slate-800">
+        <BrandLogo size="sm" />
       </div>
 
       {/* Navigation Menu */}
-      <div className="flex-1 px-4 py-5 space-y-1.5 overflow-y-auto">
-        <div className="px-3 pb-2">
+      <div className="flex-1 px-4 py-4 space-y-1.5 overflow-y-auto">
+        <div className="px-3 pb-1.5 pt-1">
           <p className="text-[11px] font-extrabold tracking-wider text-[#F59E0B] uppercase">
             MENU
           </p>
