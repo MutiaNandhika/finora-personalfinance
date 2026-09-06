@@ -17,21 +17,21 @@ export function PageHeader({
   return (
     <div
       className={cn(
-        "flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between",
+        "flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between pb-2 border-b border-slate-200/60 dark:border-slate-800",
         className
       )}
     >
       <div>
-        <h2 className="text-xl md:text-2xl font-bold tracking-tight text-foreground">
+        <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-[#1E293B] dark:text-white leading-tight">
           {title}
         </h2>
         {description && (
-          <p className="text-xs md:text-sm text-muted-foreground mt-0.5">
+          <p className="text-xs sm:text-sm text-[#64748B] dark:text-slate-400 font-medium mt-0.5">
             {description}
           </p>
         )}
       </div>
-      {action && <div className="flex items-center gap-2">{action}</div>}
+      {action && <div className="flex items-center gap-2.5 flex-wrap">{action}</div>}
     </div>
   );
 }

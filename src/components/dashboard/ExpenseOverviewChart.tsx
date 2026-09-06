@@ -10,7 +10,6 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { ExpenseOverviewData } from "@/types";
 import { formatCurrency } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -36,24 +35,24 @@ interface CustomTooltipProps {
 function OverviewTooltip({ active, payload, label }: CustomTooltipProps) {
   if (active && payload && payload.length) {
     return (
-      <div className="rounded-xl border border-border bg-card p-3 shadow-xl">
-        <p className="text-xs font-semibold text-foreground mb-2">{label}</p>
-        <div className="space-y-1 text-xs">
-          <div className="flex items-center justify-between gap-4">
-            <span className="flex items-center gap-1.5 text-muted-foreground">
-              <span className="h-2 w-2 rounded-full bg-emerald-500" />
+      <div className="rounded-2xl border border-slate-200/80 dark:border-slate-800 bg-white dark:bg-slate-900 p-3.5 shadow-xl text-xs">
+        <p className="font-black text-[#1E293B] dark:text-white mb-2">{label}</p>
+        <div className="space-y-1.5">
+          <div className="flex items-center justify-between gap-6">
+            <span className="flex items-center gap-1.5 text-[#64748B] dark:text-slate-400 font-medium">
+              <span className="h-2.5 w-2.5 rounded-full bg-[#10B981]" />
               Income
             </span>
-            <span className="font-semibold text-emerald-600 dark:text-emerald-400">
+            <span className="font-extrabold text-emerald-600 dark:text-emerald-400">
               {formatCurrency(payload[0]?.value)}
             </span>
           </div>
-          <div className="flex items-center justify-between gap-4">
-            <span className="flex items-center gap-1.5 text-muted-foreground">
-              <span className="h-2 w-2 rounded-full bg-rose-500" />
+          <div className="flex items-center justify-between gap-6">
+            <span className="flex items-center gap-1.5 text-[#64748B] dark:text-slate-400 font-medium">
+              <span className="h-2.5 w-2.5 rounded-full bg-[#EF4444]" />
               Expense
             </span>
-            <span className="font-semibold text-rose-600 dark:text-rose-400">
+            <span className="font-extrabold text-rose-600 dark:text-rose-400">
               {formatCurrency(payload[1]?.value)}
             </span>
           </div>
@@ -70,22 +69,29 @@ export function ExpenseOverviewChart({ data, isLoading = false }: ExpenseOvervie
   const hasData = data && data.some((d) => d.income > 0 || d.expense > 0);
 
   return (
-    <Card className="border-border/80 bg-card/60 backdrop-blur-xs flex flex-col justify-between">
-      <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
+    <div className="rounded-3xl border border-slate-200/80 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 shadow-sm flex flex-col justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pb-4">
         <div>
-          <CardTitle className="text-base font-semibold">Expense & Income Overview</CardTitle>
-          <CardDescription className="text-xs">
+          <span className="text-[11px] font-extrabold uppercase tracking-wider text-[#F59E0B]">
+            CASHFLOW TRENDS
+          </span>
+          <h3 className="text-lg font-black tracking-tight text-[#1E293B] dark:text-white">
+            Expense & Income Overview
+          </h3>
+          <p className="text-xs text-[#64748B] dark:text-slate-400 font-medium">
             Financial cashflow trend analysis
-          </CardDescription>
+          </p>
         </div>
-        <div className="inline-flex rounded-lg bg-muted p-1 text-xs">
+
+        {/* Pill Segmented Controls */}
+        <div className="inline-flex rounded-full bg-slate-100 dark:bg-slate-800 p-1 text-xs self-start sm:self-auto">
           <button
             type="button"
             onClick={() => setTimeframe("weekly")}
-            className={`px-2.5 py-1 rounded-md font-medium transition-colors cursor-pointer ${
+            className={`px-3.5 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer ${
               timeframe === "weekly"
-                ? "bg-card text-foreground shadow-xs font-semibold"
-                : "text-muted-foreground hover:text-foreground"
+                ? "bg-[#2563EB] text-white shadow-sm"
+                : "text-[#64748B] dark:text-slate-400 hover:text-[#1E293B] dark:hover:text-white"
             }`}
           >
             Weekly
@@ -93,10 +99,10 @@ export function ExpenseOverviewChart({ data, isLoading = false }: ExpenseOvervie
           <button
             type="button"
             onClick={() => setTimeframe("monthly")}
-            className={`px-2.5 py-1 rounded-md font-medium transition-colors cursor-pointer ${
+            className={`px-3.5 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer ${
               timeframe === "monthly"
-                ? "bg-card text-foreground shadow-xs font-semibold"
-                : "text-muted-foreground hover:text-foreground"
+                ? "bg-[#2563EB] text-white shadow-sm"
+                : "text-[#64748B] dark:text-slate-400 hover:text-[#1E293B] dark:hover:text-white"
             }`}
           >
             Monthly
@@ -104,21 +110,21 @@ export function ExpenseOverviewChart({ data, isLoading = false }: ExpenseOvervie
           <button
             type="button"
             onClick={() => setTimeframe("yearly")}
-            className={`px-2.5 py-1 rounded-md font-medium transition-colors cursor-pointer ${
+            className={`px-3.5 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer ${
               timeframe === "yearly"
-                ? "bg-card text-foreground shadow-xs font-semibold"
-                : "text-muted-foreground hover:text-foreground"
+                ? "bg-[#2563EB] text-white shadow-sm"
+                : "text-[#64748B] dark:text-slate-400 hover:text-[#1E293B] dark:hover:text-white"
             }`}
           >
             Yearly
           </button>
         </div>
-      </CardHeader>
+      </div>
 
-      <CardContent className="pt-4">
+      <div className="pt-2">
         {isLoading ? (
           <div className="h-[280px] w-full flex items-center justify-center">
-            <Skeleton className="h-full w-full rounded-xl" />
+            <Skeleton className="h-full w-full rounded-2xl" />
           </div>
         ) : !hasData ? (
           <div className="h-[280px] flex items-center justify-center">
@@ -135,25 +141,27 @@ export function ExpenseOverviewChart({ data, isLoading = false }: ExpenseOvervie
               <AreaChart data={data} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
                 <defs>
                   <linearGradient id="incomeGradient" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#10B981" stopOpacity={0.3} />
+                    <stop offset="5%" stopColor="#10B981" stopOpacity={0.35} />
                     <stop offset="95%" stopColor="#10B981" stopOpacity={0} />
                   </linearGradient>
                   <linearGradient id="expenseGradient" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#EF4444" stopOpacity={0.3} />
+                    <stop offset="5%" stopColor="#EF4444" stopOpacity={0.35} />
                     <stop offset="95%" stopColor="#EF4444" stopOpacity={0} />
                   </linearGradient>
                 </defs>
-                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="hsl(var(--border))" />
+                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(148, 163, 184, 0.2)" />
                 <XAxis
                   dataKey="period"
-                  stroke="hsl(var(--muted-foreground))"
+                  stroke="#94A3B8"
                   fontSize={11}
+                  fontWeight={600}
                   tickLine={false}
                   axisLine={false}
                 />
                 <YAxis
-                  stroke="hsl(var(--muted-foreground))"
+                  stroke="#94A3B8"
                   fontSize={11}
+                  fontWeight={600}
                   tickLine={false}
                   axisLine={false}
                   tickFormatter={(val) => `Rp${(val / 1000000).toFixed(0)}M`}
@@ -163,7 +171,7 @@ export function ExpenseOverviewChart({ data, isLoading = false }: ExpenseOvervie
                   type="monotone"
                   dataKey="income"
                   stroke="#10B981"
-                  strokeWidth={2}
+                  strokeWidth={2.5}
                   fillOpacity={1}
                   fill="url(#incomeGradient)"
                   name="Income"
@@ -172,7 +180,7 @@ export function ExpenseOverviewChart({ data, isLoading = false }: ExpenseOvervie
                   type="monotone"
                   dataKey="expense"
                   stroke="#EF4444"
-                  strokeWidth={2}
+                  strokeWidth={2.5}
                   fillOpacity={1}
                   fill="url(#expenseGradient)"
                   name="Expense"
@@ -181,7 +189,7 @@ export function ExpenseOverviewChart({ data, isLoading = false }: ExpenseOvervie
             </ResponsiveContainer>
           </div>
         )}
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 }

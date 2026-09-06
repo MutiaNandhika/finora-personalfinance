@@ -25,67 +25,63 @@ export function Header() {
 
   return (
     <>
-      <header className="sticky top-0 z-20 flex h-16 w-full items-center justify-between border-b border-border bg-background/80 px-4 md:px-8 backdrop-blur-md">
+      <header className="sticky top-0 z-20 flex h-20 w-full items-center justify-between border-b border-slate-200/80 dark:border-slate-800 bg-white/90 dark:bg-slate-950/90 px-4 md:px-8 backdrop-blur-md">
         {/* Left Section: Mobile Nav Trigger & Page Title */}
         <div className="flex items-center gap-3">
           <MobileNav />
           <div>
-            <h1 className="text-base md:text-lg font-bold text-foreground leading-none">
+            <h1 className="text-lg md:text-xl font-black text-[#1E293B] dark:text-white leading-tight tracking-tight">
               {pageTitle}
             </h1>
-            <p className="text-[11px] text-muted-foreground hidden sm:block mt-0.5">
+            <p className="text-xs text-[#64748B] dark:text-slate-400 hidden sm:block font-medium">
               {currentNav?.description || "Take control of your money."}
             </p>
           </div>
         </div>
 
         {/* Right Section: Quick Add, Notification, Theme, User Profile */}
-        <div className="flex items-center gap-2 md:gap-3">
-          <Button
-            size="sm"
+        <div className="flex items-center gap-3">
+          <button
             onClick={() => setIsAddTxOpen(true)}
-            className="hidden sm:inline-flex gap-1.5 font-medium shadow-xs"
+            className="hidden sm:inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#2563EB] hover:bg-[#1D4ED8] text-white text-xs font-bold shadow-md shadow-blue-600/25 hover:shadow-blue-600/40 hover:-translate-y-0.5 transition-all cursor-pointer"
           >
             <Plus className="h-4 w-4" />
             <span>New Transaction</span>
-          </Button>
+          </button>
 
           {/* Quick Icon Button for Mobile */}
-          <Button
-            size="icon-sm"
+          <button
             onClick={() => setIsAddTxOpen(true)}
-            className="sm:hidden h-8 w-8"
+            className="sm:hidden h-9 w-9 rounded-full bg-[#2563EB] text-white flex items-center justify-center shadow-md shadow-blue-600/25"
             aria-label="Add transaction"
           >
             <Plus className="h-4 w-4" />
-          </Button>
+          </button>
 
           {/* Notification Button */}
           <div className="relative">
-            <Button
-              variant="ghost"
-              size="icon-sm"
+            <button
               onClick={() => setShowNotifications(!showNotifications)}
-              className="relative h-8 w-8 text-muted-foreground hover:text-foreground"
+              className="relative h-10 w-10 rounded-xl border border-slate-200/80 dark:border-slate-800 bg-white dark:bg-slate-900 text-[#64748B] hover:text-[#1E293B] dark:hover:text-white flex items-center justify-center shadow-xs hover:border-slate-300 transition-colors cursor-pointer"
               aria-label="View notifications"
             >
               <Bell className="h-4 w-4" />
-              <span className="absolute top-1.5 right-1.5 h-2 w-2 rounded-full bg-primary" />
-            </Button>
+              <span className="absolute top-2 right-2 h-2 w-2 rounded-full bg-[#2563EB]" />
+            </button>
 
             {showNotifications && (
-              <div className="absolute right-0 mt-2 w-72 rounded-xl border border-border bg-card p-3 shadow-xl animate-in fade-in zoom-in-95 z-50">
-                <div className="flex items-center justify-between pb-2 border-b border-border/50 mb-2">
-                  <span className="text-xs font-semibold text-foreground">Notifications</span>
-                  <span className="text-[10px] text-muted-foreground">1 unread</span>
+              <div className="absolute right-0 mt-2 w-72 rounded-2xl border border-slate-200/80 dark:border-slate-800 bg-white dark:bg-slate-900 p-4 shadow-xl animate-in fade-in zoom-in-95 z-50">
+                <div className="flex items-center justify-between pb-2 border-b border-slate-100 dark:border-slate-800 mb-2">
+                  <span className="text-xs font-extrabold text-[#1E293B] dark:text-white">Notifications</span>
+                  <span className="text-[10px] font-bold text-[#F59E0B]">1 unread</span>
                 </div>
                 <div className="space-y-2">
-                  <div className="rounded-lg bg-muted/50 p-2 text-xs">
-                    <p className="font-medium text-foreground">Budget Alert</p>
-                    <p className="text-[11px] text-muted-foreground mt-0.5">
+                  <div className="rounded-xl bg-[#FEF9C3]/70 dark:bg-amber-950/40 p-3 text-xs border border-[#FDE047]/50 dark:border-amber-900/50">
+                    <p className="font-bold text-[#1E293B] dark:text-white">Budget Alert</p>
+                    <p className="text-[11px] text-[#64748B] dark:text-slate-300 mt-0.5 font-medium">
                       Food category budget is at 72.5% of limit.
                     </p>
-                    <span className="text-[10px] text-primary mt-1 block">Just now</span>
+                    <span className="text-[10px] font-bold text-[#2563EB] mt-1 block">Just now</span>
                   </div>
                 </div>
               </div>
@@ -96,7 +92,7 @@ export function Header() {
             <ThemeToggle />
           </div>
 
-          <div className="h-4 w-[1px] bg-border mx-1 hidden sm:block" />
+          <div className="h-5 w-[1px] bg-slate-200 dark:bg-slate-800 mx-1 hidden sm:block" />
 
           <UserNav />
         </div>

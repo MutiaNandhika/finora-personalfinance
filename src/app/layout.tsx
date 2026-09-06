@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { QueryProvider } from "@/components/providers/QueryProvider";
@@ -7,9 +7,26 @@ import { AuthProvider } from "@/components/providers/AuthProvider";
 import { ToasterProvider } from "@/components/providers/ToasterProvider";
 import { APP_NAME } from "@/lib/constants";
 
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-sans",
+const valleySans = localFont({
+  src: [
+    {
+      path: "../../public/fonts/ValleySans-Regular.woff2",
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "../../public/fonts/ValleySans-SemiBold.woff2",
+      weight: "600",
+      style: "normal",
+    },
+    {
+      path: "../../public/fonts/ValleySans-Variable.woff2",
+      weight: "100 900",
+      style: "normal",
+    },
+  ],
+  variable: "--font-valley",
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -35,8 +52,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning className={inter.variable}>
-      <body className="min-h-screen bg-background font-sans antialiased selection:bg-primary/20 selection:text-primary">
+    <html lang="en" suppressHydrationWarning className={valleySans.variable}>
+      <body className="min-h-screen bg-background font-valley antialiased selection:bg-[#FBBF24]/30 selection:text-[#1E293B]">
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

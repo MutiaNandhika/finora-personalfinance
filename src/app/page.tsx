@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
+import { BrandLogo } from "@/components/layout/BrandLogo";
 import {
   Wallet,
   PieChart,
@@ -67,14 +68,7 @@ export default function LandingPage() {
       <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-100 transition-all">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2.5 group">
-            <div className="w-10 h-10 rounded-xl bg-[#2563EB] flex items-center justify-center text-white font-black text-xl shadow-md shadow-blue-500/20 group-hover:scale-105 transition-transform">
-              <Wallet className="w-5 h-5 text-white" />
-            </div>
-            <span className="text-2xl font-black tracking-tight text-[#1E293B]">
-              Finora
-            </span>
-          </Link>
+          <BrandLogo href="/" size="sm" showTagline />
 
           {/* Navigation Links */}
           <nav className="hidden md:flex items-center gap-8 text-sm font-semibold text-[#475569]">
@@ -681,14 +675,9 @@ export default function LandingPage() {
       <footer className="bg-white border-t border-gray-100 py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-            <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-lg bg-[#2563EB] flex items-center justify-center text-white font-bold text-sm">
-                <Wallet className="w-4 h-4 text-white" />
-              </div>
-              <span className="text-lg font-black tracking-tight text-[#1E293B]">
-                Finora
-              </span>
-              <span className="text-xs text-[#94A3B8] ml-2">
+            <div className="flex items-center gap-3">
+              <BrandLogo href="/" size="xs" />
+              <span className="text-xs text-[#94A3B8] border-l border-gray-200 pl-3">
                 © {new Date().getFullYear()} Finora. Simple & smart personal finance.
               </span>
             </div>

@@ -2,7 +2,6 @@
 
 import React from "react";
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts";
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { CategoryBreakdownData } from "@/types";
 import { formatCurrency } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -28,9 +27,9 @@ function CategoryTooltip({ active, payload }: CategoryTooltipProps) {
   if (active && payload && payload.length) {
     const item = payload[0].payload;
     return (
-      <div className="rounded-xl border border-border bg-card p-2.5 shadow-xl text-xs">
-        <p className="font-semibold text-foreground">{item.categoryName}</p>
-        <p className="text-muted-foreground mt-0.5">
+      <div className="rounded-2xl border border-slate-200/80 dark:border-slate-800 bg-white dark:bg-slate-900 p-3 shadow-xl text-xs">
+        <p className="font-black text-[#1E293B] dark:text-white">{item.categoryName}</p>
+        <p className="text-[#64748B] dark:text-slate-400 mt-0.5 font-medium">
           {formatCurrency(item.amount)} ({item.percentage}%)
         </p>
       </div>
@@ -43,15 +42,20 @@ export function ExpenseCategoryChart({ data, isLoading = false }: ExpenseCategor
   const hasData = data && data.length > 0;
 
   return (
-    <Card className="border-border/80 bg-card/60 backdrop-blur-xs flex flex-col justify-between">
-      <CardHeader className="pb-2">
-        <CardTitle className="text-base font-semibold">Expense by Category</CardTitle>
-        <CardDescription className="text-xs">
+    <div className="rounded-3xl border border-slate-200/80 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 shadow-sm flex flex-col justify-between">
+      <div className="pb-3">
+        <span className="text-[11px] font-extrabold uppercase tracking-wider text-[#F59E0B]">
+          EXPENSE BREAKDOWN
+        </span>
+        <h3 className="text-lg font-black tracking-tight text-[#1E293B] dark:text-white">
+          Expense by Category
+        </h3>
+        <p className="text-xs text-[#64748B] dark:text-slate-400 font-medium">
           Spending breakdown for active period
-        </CardDescription>
-      </CardHeader>
+        </p>
+      </div>
 
-      <CardContent className="pt-2">
+      <div className="pt-2">
         {isLoading ? (
           <div className="h-[280px] w-full flex items-center justify-center">
             <Skeleton className="h-44 w-44 rounded-full" />
@@ -85,8 +89,8 @@ export function ExpenseCategoryChart({ data, isLoading = false }: ExpenseCategor
                       <Cell
                         key={`cell-${entry.categoryId}`}
                         fill={entry.color || CHART_COLORS[index % CHART_COLORS.length]}
-                        stroke="hsl(var(--card))"
-                        strokeWidth={2}
+                        stroke="transparent"
+                        strokeWidth={0}
                       />
                     ))}
                   </Pie>
@@ -99,22 +103,22 @@ export function ExpenseCategoryChart({ data, isLoading = false }: ExpenseCategor
               {data.slice(0, 5).map((item, index) => (
                 <div
                   key={item.categoryId}
-                  className="flex items-center justify-between text-xs py-1 border-b border-border/40 last:border-0"
+                  className="flex items-center justify-between text-xs py-1.5 border-b border-slate-100 dark:border-slate-800 last:border-0"
                 >
                   <div className="flex items-center gap-2 truncate">
                     <span
-                      className="h-2.5 w-2.5 rounded-full shrink-0"
+                      className="h-2.5 w-2.5 rounded-full shrink-0 shadow-xs"
                       style={{
                         backgroundColor:
                           item.color || CHART_COLORS[index % CHART_COLORS.length],
                       }}
                     />
-                    <span className="text-foreground font-medium truncate">
+                    <span className="text-[#1E293B] dark:text-slate-200 font-bold truncate">
                       {item.categoryName}
                     </span>
                   </div>
                   <div className="flex items-center gap-2 shrink-0">
-                    <span className="font-semibold text-foreground">
+                    <span className="px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 font-extrabold text-[#1E293B] dark:text-white text-[11px]">
                       {item.percentage}%
                     </span>
                   </div>
@@ -123,7 +127,7 @@ export function ExpenseCategoryChart({ data, isLoading = false }: ExpenseCategor
             </div>
           </div>
         )}
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 }

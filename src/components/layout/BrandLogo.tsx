@@ -21,48 +21,48 @@ export function BrandLogo({
 }: BrandLogoProps) {
   const sizeConfig = {
     xs: {
-      width: 76,
-      height: 26,
-      fontSize: 11.5,
-      letterSpacing: 2.2,
-      yTop: 8.5,
-      yBottom: 17.5,
-      taglineClass: "text-[8.5px]",
+      width: 84,
+      height: 28,
+      fontSize: 12,
+      letterSpacing: 2.4,
+      yTop: 9,
+      yBottom: 19,
+      taglineClass: "text-[8px]",
     },
     sm: {
-      width: 104,
+      width: 108,
       height: 36,
       fontSize: 15.5,
-      letterSpacing: 3.0,
+      letterSpacing: 3.2,
       yTop: 12,
       yBottom: 24,
-      taglineClass: "text-[9.5px]",
+      taglineClass: "text-[9px]",
     },
     md: {
       width: 132,
-      height: 46,
-      fontSize: 19.5,
+      height: 44,
+      fontSize: 19,
       letterSpacing: 3.8,
-      yTop: 15.5,
-      yBottom: 30.5,
-      taglineClass: "text-[11px]",
+      yTop: 14.5,
+      yBottom: 29.5,
+      taglineClass: "text-[10px]",
     },
     lg: {
       width: 168,
-      height: 58,
-      fontSize: 25,
+      height: 56,
+      fontSize: 24,
       letterSpacing: 4.8,
-      yTop: 19.5,
-      yBottom: 38.5,
+      yTop: 18.5,
+      yBottom: 37.5,
       taglineClass: "text-xs",
     },
     xl: {
-      width: 220,
+      width: 228,
       height: 76,
       fontSize: 33,
-      letterSpacing: 6.4,
-      yTop: 25.5,
-      yBottom: 50.5,
+      letterSpacing: 6.6,
+      yTop: 25,
+      yBottom: 51,
       taglineClass: "text-sm",
     },
   };
@@ -76,7 +76,7 @@ export function BrandLogo({
       viewBox={`0 0 ${width} ${height}`}
       width={width}
       height={height}
-      className="text-foreground transition-all duration-300 group-hover:opacity-80 shrink-0"
+      className="text-foreground transition-all duration-300 group-hover:opacity-85 shrink-0 select-none"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       aria-label="Finora Logo"
@@ -93,14 +93,14 @@ export function BrandLogo({
         dominantBaseline="central"
         style={{
           fontFamily:
-            "var(--font-sans), 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+            "var(--font-valley), 'Valley Sans', -apple-system, BlinkMacSystemFont, sans-serif",
           textTransform: "uppercase",
         }}
       >
         FINORA
       </text>
 
-      {/* Bottom FINORA (180-degree inverted mirror lockup) */}
+      {/* Bottom FINORA (180-degree inverted mirror) */}
       <text
         x={centerX}
         y={yBottom}
@@ -113,7 +113,7 @@ export function BrandLogo({
         transform={`rotate(180 ${centerX} ${yBottom})`}
         style={{
           fontFamily:
-            "var(--font-sans), 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+            "var(--font-valley), 'Valley Sans', -apple-system, BlinkMacSystemFont, sans-serif",
           textTransform: "uppercase",
         }}
       >
@@ -127,9 +127,9 @@ export function BrandLogo({
       className={cn(
         "flex flex-col items-start select-none group focus-visible:outline-none transition-transform duration-200",
         variant === "badge" &&
-          "px-3 py-2 rounded-xl border border-border/70 bg-card/80 shadow-xs backdrop-blur-xs hover:border-border",
+          "px-3 py-2 rounded-2xl border border-slate-200/80 dark:border-slate-800 bg-white/80 dark:bg-slate-900/80 shadow-xs backdrop-blur-xs hover:border-slate-300",
         variant === "card" &&
-          "p-6 rounded-2xl bg-[#F6F5EE] dark:bg-[#111622] text-[#111827] dark:text-[#F6F5EE] shadow-lg flex items-center justify-center",
+          "p-6 rounded-3xl bg-[#F6F5EE] dark:bg-[#111622] text-[#111827] dark:text-[#F6F5EE] shadow-lg flex items-center justify-center",
         className
       )}
     >
@@ -137,7 +137,7 @@ export function BrandLogo({
       {showTagline && (
         <span
           className={cn(
-            "font-semibold tracking-widest text-muted-foreground uppercase opacity-75 mt-1 pl-0.5",
+            "font-extrabold uppercase tracking-widest text-[#F59E0B] opacity-90 mt-1 pl-0.5",
             taglineClass
           )}
         >
@@ -151,7 +151,7 @@ export function BrandLogo({
     return (
       <Link
         href={href}
-        className="inline-flex items-center focus:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-lg group"
+        className="inline-flex items-center focus:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-xl group"
       >
         {content}
       </Link>
